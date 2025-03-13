@@ -3,9 +3,47 @@ package org.utils;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.util.*;
 
 public class FileUtils {
+
+    public static String getDirPath(String path){
+        String filePath = System.getProperty("user.dir") + path;
+        File file = new File(filePath);
+
+        return file.getAbsolutePath();
+    }
+
+    public static File[] getAllFilesFromDir(String dirName){
+        File dir = new File(dirName);
+        if(dir.exists() && dir.isDirectory()) {
+            return dir.listFiles();
+        }
+        else{
+            return new File[0];
+        }
+    }
+
+    public static String[] convertFilesToArray(File[] files){
+        String[] sFiles = new String[files.length];
+        int i = 0;
+        for(File item :files){
+            sFiles[i++] = item.getName();
+        }
+
+        return sFiles;
+    }
+
+    public static File[] sortFiles(File[] files, SortOrder sortOrder){
+        Comparator<File> comparator = Comparator.comparing(File::getName);
+        if (sortOrder == SortOrder.DESC) {
+            comparator = comparator.reversed();
+        }
+        assert files != null;
+        Arrays.sort(files, comparator);
+
+        return files;
+    }
 
     public static ArrayList<String> readFileFromResources(String fileName) {
         ArrayList<String> lineas = new ArrayList<>();
